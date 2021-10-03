@@ -4,11 +4,12 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.Group
 import com.skirmish.sketris.actor.SketrisMatrix.Tile.*
 
 class SketrisMatrix(
     private val assetManager: AssetManager
-) : Actor() {
+) : Group() {
 
     companion object {
         const val TILE_SIZE = 64f
@@ -25,7 +26,7 @@ class SketrisMatrix(
     private val emptyMinoTexture = assetManager.get<Texture>("graphic/minos/empty.png")
 
     // rainbow
-    private val zMinoTexture = assetManager.get<Texture>("graphic/minos/mino1.png")
+    public val zMinoTexture = assetManager.get<Texture>("graphic/minos/mino1.png")
     private val lMinoTexture = assetManager.get<Texture>("graphic/minos/mino2.png")
     private val oMinoTexture = assetManager.get<Texture>("graphic/minos/mino3.png")
     private val sMinoTexture = assetManager.get<Texture>("graphic/minos/mino4.png")
@@ -52,6 +53,14 @@ class SketrisMatrix(
 
     private val tiles: MutableList<MutableList<Tile?>> = MutableList(ROWS) { MutableList<Tile?>(COLUMNS) { null } }
 
+    // Make an active block. Need to make the class first.
+    // Also need to make a ghost piece.
+    // Unsure of what to do (does the active block get created by the matrix when a new piece is spawned?)
+    // or do we keep a reference to a single active block (and ghost piece) and edit its info on the fly
+    // good night
+    private val activeBlock : FloatingBlock = FloatingBlock(assetManager, this, 5, 17)
+    private val ghostBlock : FloatingBlock = FloatingBlock(assetManager, this, 5, -1)
+
     init {
         width = TILE_SIZE * VISIBLE_COLUMNS
         height = TILE_SIZE * VISIBLE_ROWS
@@ -65,14 +74,12 @@ class SketrisMatrix(
         tiles[VISIBLE_ROWS - 1][0] = L
         tiles[0][VISIBLE_COLUMNS - 1] = L
         tiles[VISIBLE_ROWS - 1][VISIBLE_COLUMNS - 1] = L
-    }
 
-    // Make an active block. Need to make the class first.
-    // Also need to make a ghost piece.
-    // Unsure of what to do (does the active block get created by the matrix when a new piece is spawned?)
-    // or do we keep a reference to a single active block (and ghost piece) and edit its info on the fly
-    // good night
-    private val activeBlock = ActiveBlock(ass)
+        ghostBlock.color.a = 0.3f
+
+        addActor(activeBlock)
+        addActor(ghostBlock)
+    }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
         for ((rowNum, row) in tiles.take(VISIBLE_ROWS).withIndex()) {
@@ -85,6 +92,8 @@ class SketrisMatrix(
                 batch.draw(texture, x + colNum * TILE_SIZE, y + rowNum * TILE_SIZE)
             }
         }
+
+        super.draw(batch, parentAlpha)
     }
 
 }
