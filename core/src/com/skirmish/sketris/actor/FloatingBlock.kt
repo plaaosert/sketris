@@ -1,37 +1,31 @@
 package com.skirmish.sketris.actor
 
-import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.skirmish.sketris.actor.SketrisMatrix.Companion.COLUMNS
+import com.skirmish.sketris.actor.SketrisMatrix.Companion.ROWS
+import com.skirmish.sketris.actor.SketrisMatrix.Companion.TILE_SIZE
+import com.skirmish.sketris.mino.Mino
 
 class FloatingBlock(
-        private val assetManager: AssetManager, private val matrix: SketrisMatrix, x_loc: Int, y_loc: Int
+    private val matrix: SketrisMatrix,
+    private val mino: Mino,
+    xLoc: Int,
+    yLoc: Int
 ) : Actor() {
-    public val xt = x_loc
-    public val yt = y_loc
 
-    private val temp_grid : Array<Array<Boolean>> = Array(4) {
-        Array<Boolean>(4) {
-            false
-        }
-    }
-
-    init {
-        temp_grid[2][1] = true
-        temp_grid[2][2] = true
-        temp_grid[1][2] = true
-        temp_grid[1][3] = true
-    }
+    private val xt = xLoc
+    private val yt = yLoc
 
     override fun draw(batch: Batch, parentAlpha: Float) {
-        for ((rowNum, row) in temp_grid.withIndex()) {
+        for ((rowNum, row) in mino.rotation.data.withIndex()) {
             for ((colNum, tile) in row.withIndex()) {
                 if (tile) {
-                    val texture = matrix.zMinoTexture
+                    val texture = matrix.minoTextures[mino.type]
                     batch.color = color
 
-                    if (xt + colNum <= SketrisMatrix.COLUMNS && yt + colNum <= SketrisMatrix.ROWS) {
-                        batch.draw(texture, (xt + colNum) * SketrisMatrix.TILE_SIZE, (yt + rowNum) * SketrisMatrix.TILE_SIZE)
+                    if (xt + colNum <= COLUMNS && yt + colNum <= ROWS) {
+                        batch.draw(texture, (xt + colNum) * TILE_SIZE, (yt + rowNum) * TILE_SIZE)
                     }
                 }
             }

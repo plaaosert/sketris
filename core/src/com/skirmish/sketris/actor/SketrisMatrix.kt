@@ -3,9 +3,10 @@ package com.skirmish.sketris.actor
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
-import com.skirmish.sketris.actor.SketrisMatrix.Tile.*
+import com.skirmish.sketris.mino.Mino
+import com.skirmish.sketris.mino.MinoType
+import com.skirmish.sketris.mino.MinoType.*
 
 class SketrisMatrix(
     private val assetManager: AssetManager
@@ -37,11 +38,7 @@ class SketrisMatrix(
     // shirase
     private val shiraseMinoTexture = assetManager.get<Texture>("graphic/minos/mino9.png")
 
-    enum class Tile {
-        Z, L, O, S, I, J, T
-    }
-
-    private val tileTextures = mapOf(
+    val minoTextures = mapOf(
         Z to zMinoTexture,
         L to lMinoTexture,
         O to oMinoTexture,
@@ -51,15 +48,25 @@ class SketrisMatrix(
         T to tMinoTexture
     )
 
-    private val tiles: MutableList<MutableList<Tile?>> = MutableList(ROWS) { MutableList<Tile?>(COLUMNS) { null } }
+    private val tiles: MutableList<MutableList<MinoType?>> = MutableList(ROWS) { MutableList<MinoType?>(COLUMNS) { null } }
 
     // Make an active block. Need to make the class first.
     // Also need to make a ghost piece.
     // Unsure of what to do (does the active block get created by the matrix when a new piece is spawned?)
     // or do we keep a reference to a single active block (and ghost piece) and edit its info on the fly
     // good night
-    private val activeBlock : FloatingBlock = FloatingBlock(assetManager, this, 5, 17)
-    private val ghostBlock : FloatingBlock = FloatingBlock(assetManager, this, 5, -1)
+    private val activeBlock : FloatingBlock = FloatingBlock(
+        this,
+        Mino(Z),
+        5,
+        17
+    )
+    private val ghostBlock : FloatingBlock = FloatingBlock(
+        this,
+        Mino(Z),
+        5,
+        -1
+    )
 
     init {
         width = TILE_SIZE * VISIBLE_COLUMNS
@@ -88,7 +95,7 @@ class SketrisMatrix(
                 // ?:                - Elvis operator (takes value on the right if value on the left is null)
                 // let               - Scope function - takes value into scope as lambda parameter
                 // tileTextures::get - Method reference - references the instance of map's get method
-                val texture = tile?.let(tileTextures::get) ?: emptyMinoTexture
+                val texture = tile?.let(minoTextures::get) ?: emptyMinoTexture
                 batch.draw(texture, x + colNum * TILE_SIZE, y + rowNum * TILE_SIZE)
             }
         }
