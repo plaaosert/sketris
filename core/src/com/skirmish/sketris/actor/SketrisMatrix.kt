@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Group
 import com.skirmish.sketris.mino.Mino
 import com.skirmish.sketris.mino.MinoType
 import com.skirmish.sketris.mino.MinoType.*
+import com.skirmish.sketris.queue.MinoQueue
+import com.skirmish.sketris.queue.randomizer.SevenBagRandomizer
 
 class SketrisMatrix(
     private val assetManager: AssetManager
@@ -55,17 +57,19 @@ class SketrisMatrix(
     // Unsure of what to do (does the active block get created by the matrix when a new piece is spawned?)
     // or do we keep a reference to a single active block (and ghost piece) and edit its info on the fly
     // good night
+    private val minoQueue = MinoQueue(randomizer = SevenBagRandomizer())
+    private val mino = Mino(Z) //minoQueue.popNext()
     private val activeBlock : FloatingBlock = FloatingBlock(
         this,
-        Mino(Z),
+        mino,
         5,
         17
     )
     private val ghostBlock : FloatingBlock = FloatingBlock(
         this,
-        Mino(Z),
+        mino,
         5,
-        -1
+        0
     )
 
     init {
