@@ -23,7 +23,7 @@ class Sketris : Game() {
         assetManager.load("graphic/minos/mino9.png", Texture::class.java)
         assetManager.load("graphic/minos/empty.png", Texture::class.java)
         assetManager.finishLoading()
-        screen = MainScreen(assetManager)
+        setScreen(MainScreen(assetManager))
     }
 
     override fun dispose() {

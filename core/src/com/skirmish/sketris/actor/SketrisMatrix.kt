@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.skirmish.sketris.mino.MinoType
 import com.skirmish.sketris.mino.MinoType.*
+import com.skirmish.sketris.mino.RotationDirection
 import com.skirmish.sketris.queue.MinoQueue
 import com.skirmish.sketris.queue.randomizer.SevenBagRandomizer
 
@@ -75,16 +76,6 @@ class SketrisMatrix(
         width = TILE_SIZE * VISIBLE_COLUMNS
         height = TILE_SIZE * VISIBLE_ROWS
 
-        tiles[0][0] = Z
-        tiles[0][1] = Z
-        tiles[0][2] = L
-        tiles[1][1] = J
-
-        tiles[0][0] = L
-        tiles[VISIBLE_ROWS - 1][0] = L
-        tiles[0][VISIBLE_COLUMNS - 1] = L
-        tiles[VISIBLE_ROWS - 1][VISIBLE_COLUMNS - 1] = L
-
         ghostBlock.color.a = 0.3f
 
         addActor(activeBlock)
@@ -105,6 +96,23 @@ class SketrisMatrix(
         }
 
         super.draw(batch, parentAlpha)
+    }
+
+    override fun act(delta: Float) {
+        super.act(delta)
+
+    }
+
+    fun rotatePiece(direction: RotationDirection) {
+        mino.rotate(direction)
+    }
+
+    fun hold() {
+        TODO("not yet implemented")
+    }
+
+    fun hardDrop() {
+        TODO("not yet implemented")
     }
 
 }

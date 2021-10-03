@@ -6,7 +6,7 @@ class MinoRotation(
     companion object {
         fun parse(data: String): MinoRotation {
             return MinoRotation(
-                data.split("\n").map { line ->
+                data.split("\n").reversed().map { line ->
                     line.map { char ->
                         when (char) {
                             '#' -> true
