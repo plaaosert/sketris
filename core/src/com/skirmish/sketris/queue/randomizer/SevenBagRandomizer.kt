@@ -7,7 +7,7 @@ import kotlin.random.Random
 class SevenBagRandomizer(private val random: Random = Random.Default) : Randomizer {
     override fun generateNextPieces(): List<Mino> {
         val minoTypes = MinoType.values()
-        minoTypes.shuffle()
+        minoTypes.shuffle(random)
         return minoTypes.map(::Mino)
     }
 }
