@@ -22,7 +22,7 @@ class FloatingBlock(
             for ((colNum, tile) in row.withIndex()) {
                 if (tile) {
                     val texture = matrix.minoTextures[mino.type]
-                    batch.color = color
+                    batch.setColor(1f, 1f, 1f, color.a * parentAlpha)
 
                     if (xt + colNum <= COLUMNS && yt + colNum <= ROWS) {
                         batch.draw(texture, (xt + colNum) * TILE_SIZE, (yt + rowNum) * TILE_SIZE)

@@ -89,6 +89,7 @@ class SketrisMatrix(
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
+        batch.setColor(1f, 1f, 1f, color.a * parentAlpha)
         for ((rowNum, row) in tiles.take(VISIBLE_ROWS).withIndex()) {
             for ((colNum, tile) in row.take(VISIBLE_COLUMNS).withIndex()) {
                 // ?.                - Safe call - invokes function if value is not null, otherwise null
