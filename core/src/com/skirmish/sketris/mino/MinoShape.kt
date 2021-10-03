@@ -21,43 +21,141 @@ class MinoShape(
                 .#.
             """.trimIndent(),
             """
-                
+                ...
+                ##.
+                .##
+            """.trimIndent(),
+            """
+                .#.
+                ##.
+                #..
             """.trimIndent()
         )
 
         private val l = MinoShape(
             """
-                
+                ..#
+                ###
+                ...
+            """.trimIndent(),
+            """
+                .#.
+                .#.
+                .##
+            """.trimIndent(),
+            """
+                ...
+                ###
+                #..
+            """.trimIndent(),
+            """
+                ##.
+                .#.
+                .#.
             """.trimIndent()
         )
 
         private val o = MinoShape(
             """
-                
+                .##.
+                .##.
+                ....
             """.trimIndent()
         )
 
         private val s = MinoShape(
             """
-                
+                .##
+                ##.
+                ...
+            """.trimIndent(),
+            """
+                .#.
+                .##
+                ..#
+            """.trimIndent(),
+            """
+                ...
+                .##
+                ##.
+            """.trimIndent(),
+            """
+                #..
+                ##.
+                .#.
             """.trimIndent()
         )
 
         private val i = MinoShape(
             """
-                
+                ....
+                ####
+                ....
+                ....
+            """.trimIndent(),
+            """
+                ..#.
+                ..#.
+                ..#.
+                ..#.
+            """.trimIndent(),
+            """
+                ....
+                ....
+                ####
+                ....
+            """.trimIndent(),
+            """
+                .#..
+                .#..
+                .#..
+                .#..
             """.trimIndent()
         )
 
         private val j = MinoShape(
             """
-                
+                #..
+                ###
+                ...
+            """.trimIndent(),
+            """
+                .##
+                .#.
+                .#.
+            """.trimIndent(),
+            """
+                ...
+                ###
+                ..#
+            """.trimIndent(),
+            """
+                .#.
+                .#.
+                ##.
             """.trimIndent()
         )
 
         private val t = MinoShape(
             """
-                
+                .#.
+                ###
+                ...
+            """.trimIndent(),
+            """
+                .#.
+                .##
+                .#.
+            """.trimIndent(),
+            """
+                ...
+                ###
+                .#.
+            """.trimIndent(),
+            """
+                .#.
+                ##.
+                .#.
             """.trimIndent()
         )
 

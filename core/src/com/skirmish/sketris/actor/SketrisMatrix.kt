@@ -4,7 +4,6 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Group
-import com.skirmish.sketris.mino.Mino
 import com.skirmish.sketris.mino.MinoType
 import com.skirmish.sketris.mino.MinoType.*
 import com.skirmish.sketris.queue.MinoQueue
@@ -58,7 +57,7 @@ class SketrisMatrix(
     // or do we keep a reference to a single active block (and ghost piece) and edit its info on the fly
     // good night
     private val minoQueue = MinoQueue(randomizer = SevenBagRandomizer())
-    private val mino = Mino(Z) //minoQueue.popNext()
+    private val mino = minoQueue.popNext()
     private val activeBlock : FloatingBlock = FloatingBlock(
         this,
         mino,
