@@ -15,7 +15,7 @@ class Mino(
         when (direction) {
             COUNTER_CLOCKWISE -> {
                 if (--rotationIndex < 0) {
-                    rotationIndex = shape.rotations.size - 1
+                    rotationIndex = shape.rotations.lastIndex
                 }
             }
             CLOCKWISE -> {

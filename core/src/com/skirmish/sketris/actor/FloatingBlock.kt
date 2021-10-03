@@ -5,19 +5,15 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.skirmish.sketris.actor.SketrisMatrix.Companion.COLUMNS
 import com.skirmish.sketris.actor.SketrisMatrix.Companion.ROWS
 import com.skirmish.sketris.actor.SketrisMatrix.Companion.TILE_SIZE
-import com.skirmish.sketris.mino.Mino
 
 class FloatingBlock(
     private val matrix: SketrisMatrix,
-    private val mino: Mino,
-    xLoc: Int,
-    yLoc: Int
+    var xt: Int,
+    var yt: Int
 ) : Actor() {
 
-    private val xt = xLoc
-    private val yt = yLoc
-
     override fun draw(batch: Batch, parentAlpha: Float) {
+        val mino = matrix.activeMino
         for ((rowNum, row) in mino.rotation.data.withIndex()) {
             for ((colNum, tile) in row.withIndex()) {
                 if (tile) {

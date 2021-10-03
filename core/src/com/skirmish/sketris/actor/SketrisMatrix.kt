@@ -4,14 +4,17 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Group
+import com.skirmish.sketris.controls.Controls
 import com.skirmish.sketris.mino.MinoType
 import com.skirmish.sketris.mino.MinoType.*
 import com.skirmish.sketris.mino.RotationDirection
 import com.skirmish.sketris.queue.MinoQueue
 import com.skirmish.sketris.queue.randomizer.SevenBagRandomizer
+import com.skirmish.sketris.settings.Settings
 
 class SketrisMatrix(
-    private val assetManager: AssetManager
+    private val assetManager: AssetManager,
+    private val settings: Settings
 ) : Group() {
 
     companion object {
@@ -58,19 +61,24 @@ class SketrisMatrix(
     // or do we keep a reference to a single active block (and ghost piece) and edit its info on the fly
     // good night
     private val minoQueue = MinoQueue(randomizer = SevenBagRandomizer())
-    private val mino = minoQueue.popNext()
+    var activeMino = minoQueue.popNext()
     private val activeBlock : FloatingBlock = FloatingBlock(
         this,
-        mino,
         5,
         17
     )
     private val ghostBlock : FloatingBlock = FloatingBlock(
         this,
-        mino,
         5,
         0
     )
+
+    private var leftPressed = false
+    private var leftDasHold: Float = 0f
+    private var timeToNextLeftRepeat = 0f
+    private var rightPressed = false
+    private var rightDasHold: Float = 0f
+    private var timeToNextRightRepeat = 0f
 
     init {
         width = TILE_SIZE * VISIBLE_COLUMNS
@@ -100,11 +108,59 @@ class SketrisMatrix(
 
     override fun act(delta: Float) {
         super.act(delta)
+        val controls = Controls.playerControls[0] ?: Controls.defaultControls
+        if (controls.moveLeft.isPressed) {
+            if (!leftPressed || leftDasHold > settings.das) {
+                timeToNextLeftRepeat -= delta
+                while (timeToNextLeftRepeat < 0f) {
+                    moveLeft()
+                    timeToNextLeftRepeat += settings.arr
+                }
+            }
+            leftPressed = true
+            leftDasHold += delta
+        } else {
+            leftPressed = false
+            leftDasHold = 0f
+            timeToNextLeftRepeat = 0f
+        }
+        if (controls.moveRight.isPressed) {
+            if (!rightPressed || rightDasHold > settings.das) {
+                timeToNextRightRepeat -= delta
+                while (timeToNextRightRepeat < 0f) {
+                    moveRight()
+                    timeToNextRightRepeat += settings.arr
+                }
+            }
+            rightPressed = true
+            rightDasHold += delta
+        } else {
+            rightPressed = false
+            rightDasHold = 0f
+            timeToNextRightRepeat = 0f
+        }
+    }
 
+    fun moveLeft() {
+        if (--activeBlock.xt < -activeMino.rotation.offset) {
+            activeBlock.xt = -activeMino.rotation.offset
+        }
+        if (--ghostBlock.xt < -activeMino.rotation.offset) {
+            ghostBlock.xt = -activeMino.rotation.offset
+        }
+    }
+
+    fun moveRight() {
+        if (++activeBlock.xt + activeMino.rotation.width >= VISIBLE_COLUMNS) {
+            activeBlock.xt = VISIBLE_COLUMNS - 1 - activeMino.rotation.width
+        }
+        if (++ghostBlock.xt + activeMino.rotation.width >= VISIBLE_COLUMNS) {
+            ghostBlock.xt = VISIBLE_COLUMNS - 1 - activeMino.rotation.width
+        }
     }
 
     fun rotatePiece(direction: RotationDirection) {
-        mino.rotate(direction)
+        activeMino.rotate(direction)
     }
 
     fun hold() {
@@ -112,7 +168,7 @@ class SketrisMatrix(
     }
 
     fun hardDrop() {
-        TODO("not yet implemented")
+        activeMino = minoQueue.popNext()
     }
 
 }

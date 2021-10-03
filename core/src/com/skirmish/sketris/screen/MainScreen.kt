@@ -14,10 +14,12 @@ import com.skirmish.sketris.actor.SketrisMatrix
 import com.skirmish.sketris.controls.*
 import com.skirmish.sketris.mino.RotationDirection.CLOCKWISE
 import com.skirmish.sketris.mino.RotationDirection.COUNTER_CLOCKWISE
+import com.skirmish.sketris.settings.Settings
 import io.anuke.gif.GifRecorder
 
 class MainScreen(
-    private val assetManager: AssetManager
+    private val assetManager: AssetManager,
+    private val settings: Settings
 ) : ScreenAdapter() {
 
     private val stage = Stage(FitViewport(2560f, 1440f))
@@ -25,7 +27,7 @@ class MainScreen(
     private val gifRecorder = GifRecorder(stage.batch)
 
     init {
-        val matrix = SketrisMatrix(assetManager)
+        val matrix = SketrisMatrix(assetManager, settings)
         stage.addActor(matrix)
         matrix.x = (stage.width - matrix.width) / 2f
         matrix.y = (stage.height - matrix.height) / 2f

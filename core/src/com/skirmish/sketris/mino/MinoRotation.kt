@@ -17,4 +17,8 @@ class MinoRotation(
             )
         }
     }
+
+    val width: Int = data.filter { it.contains(true) }.maxOf { row -> row.lastIndexOf(true) }
+    val height: Int = data.indexOfLast { it.contains(true) } - data.indexOfFirst { it.contains(true) }
+    val offset: Int = data.filter { it.contains(true) }.minOf { row -> row.indexOf(true) }
 }
